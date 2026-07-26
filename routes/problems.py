@@ -35,17 +35,27 @@ def add_problem():
 
     return render_template("add_problem.html", form=form)
 
+from flask import request
+
 @problems.route("/problems")
 @login_required
 def view_problems():
 
-    problems_list = Problem.query.filter_by(
-        user_id=current_user.user_id
-    ).all()
+    search = request.args.get("search", "")
+
+    query = Problem.query.filter_by(user_id=current_user.user_id)
+
+    if search:
+        query = query.filter(
+            Problem.title.ilike(f"%{search}%")
+        )
+
+    problems_list = query.all()
 
     return render_template(
         "view_problems.html",
-        problems=problems_list
+        problems=problems_list,
+        search=search
     )
 
 
