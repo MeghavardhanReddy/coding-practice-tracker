@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Practice Session{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-md-7">
+
+        <div class="card shadow">
+
+            <div class="card-header bg-warning">
+                <h3 class="mb-0">Edit Practice Session</h3>
+                <small class="text-muted">Problem: <strong>{{ session.problem.title }}</strong></small>
+            </div>
+
+            <div class="card-body">
+
+                <form method="POST">
+
+                    {{ form.hidden_tag() }}
+
+                    <div class="mb-3">
+                        {{ form.problem.label(class="form-label") }}
+                        {{ form.problem(class="form-select") }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.status.label(class="form-label") }}
+                        {{ form.status(class="form-select") }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.time_taken.label(class="form-label") }}
+                        {{ form.time_taken(class="form-control") }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.attempts.label(class="form-label") }}
+                        {{ form.attempts(class="form-control") }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.notes.label(class="form-label") }}
+                        {{ form.notes(class="form-control", rows="4") }}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        Update Session
+                    </button>
+
+                    <a href="{{ url_for('practice.practice_history') }}"
+                       class="btn btn-secondary">
+                        Cancel
+                    </a>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

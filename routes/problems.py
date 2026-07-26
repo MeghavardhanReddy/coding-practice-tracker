@@ -1,9 +1,10 @@
-from flask import Blueprint, render_template, redirect, url_for, flash
+from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
 
 from models import db
 from models.problem import Problem
 from forms.problem_form import ProblemForm
+from forms.delete_form import DeleteForm
 
 problems = Blueprint("problems", __name__)
 
@@ -35,27 +36,41 @@ def add_problem():
 
     return render_template("add_problem.html", form=form)
 
-from flask import request
 
 @problems.route("/problems")
 @login_required
 def view_problems():
 
     search = request.args.get("search", "")
+    difficulty = request.args.get("difficulty", "")
+    platform = request.args.get("platform", "")
+    status = request.args.get("status", "")
 
     query = Problem.query.filter_by(user_id=current_user.user_id)
 
     if search:
-        query = query.filter(
-            Problem.title.ilike(f"%{search}%")
-        )
+        query = query.filter(Problem.title.ilike(f"%{search}%"))
+
+    if difficulty:
+        query = query.filter_by(difficulty=difficulty)
+
+    if platform:
+        query = query.filter_by(platform=platform)
+
+    if status:
+        query = query.filter_by(status=status)
 
     problems_list = query.all()
+    delete_form = DeleteForm()
 
     return render_template(
         "view_problems.html",
         problems=problems_list,
-        search=search
+        search=search,
+        difficulty=difficulty,
+        platform=platform,
+        status=status,
+        delete_form=delete_form
     )
 
 
@@ -89,6 +104,7 @@ def edit_problem(id):
         "edit_problem.html",
         form=form
     )
+
 
 @problems.route("/delete-problem/<int:id>", methods=["POST"])
 @login_required

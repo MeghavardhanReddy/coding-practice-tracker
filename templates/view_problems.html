@@ -10,9 +10,10 @@
    class="btn btn-success mb-3">
     + Add New Problem
 </a>
-<form method="GET" class="row mb-3">
 
-    <div class="col-md-10">
+<form method="GET" class="row g-2 mb-3">
+
+    <div class="col-md-4">
         <input type="text"
                name="search"
                class="form-control"
@@ -21,12 +22,41 @@
     </div>
 
     <div class="col-md-2">
-        <button class="btn btn-primary w-100">
-            Search
-        </button>
+        <select name="difficulty" class="form-select">
+            <option value="">All Difficulties</option>
+            <option value="Easy"   {% if difficulty == "Easy"   %}selected{% endif %}>Easy</option>
+            <option value="Medium" {% if difficulty == "Medium" %}selected{% endif %}>Medium</option>
+            <option value="Hard"   {% if difficulty == "Hard"   %}selected{% endif %}>Hard</option>
+        </select>
+    </div>
+
+    <div class="col-md-2">
+        <select name="platform" class="form-select">
+            <option value="">All Platforms</option>
+            <option value="LeetCode"      {% if platform == "LeetCode"      %}selected{% endif %}>LeetCode</option>
+            <option value="CodeChef"      {% if platform == "CodeChef"      %}selected{% endif %}>CodeChef</option>
+            <option value="Codeforces"    {% if platform == "Codeforces"    %}selected{% endif %}>Codeforces</option>
+            <option value="HackerRank"    {% if platform == "HackerRank"    %}selected{% endif %}>HackerRank</option>
+            <option value="GeeksforGeeks" {% if platform == "GeeksforGeeks" %}selected{% endif %}>GeeksforGeeks</option>
+        </select>
+    </div>
+
+    <div class="col-md-2">
+        <select name="status" class="form-select">
+            <option value="">All Statuses</option>
+            <option value="Not Started" {% if status == "Not Started" %}selected{% endif %}>Not Started</option>
+            <option value="Attempted"   {% if status == "Attempted"   %}selected{% endif %}>Attempted</option>
+            <option value="Revision"    {% if status == "Revision"    %}selected{% endif %}>Revision</option>
+            <option value="Solved"      {% if status == "Solved"      %}selected{% endif %}>Solved</option>
+        </select>
+    </div>
+
+    <div class="col-md-2">
+        <button class="btn btn-primary w-100">Search</button>
     </div>
 
 </form>
+
 <table class="table table-bordered table-hover">
 
     <thead class="table-dark">
@@ -48,15 +78,41 @@
 
         <tr>
 
-            <td>{{ problem.title }}</td>
+            <td>
+                {% if problem.problem_link %}
+                    <a href="{{ problem.problem_link }}" target="_blank" rel="noopener">
+                        {{ problem.title }}
+                    </a>
+                {% else %}
+                    {{ problem.title }}
+                {% endif %}
+            </td>
 
             <td>{{ problem.platform }}</td>
 
-            <td>{{ problem.difficulty }}</td>
+            <td>
+                {% if problem.difficulty == "Easy" %}
+                    <span class="badge bg-success">Easy</span>
+                {% elif problem.difficulty == "Medium" %}
+                    <span class="badge bg-warning text-dark">Medium</span>
+                {% else %}
+                    <span class="badge bg-danger">Hard</span>
+                {% endif %}
+            </td>
 
             <td>{{ problem.topic }}</td>
 
-            <td>{{ problem.status }}</td>
+            <td>
+                {% if problem.status == "Solved" %}
+                    <span class="badge bg-success">Solved</span>
+                {% elif problem.status == "Attempted" %}
+                    <span class="badge bg-primary">Attempted</span>
+                {% elif problem.status == "Revision" %}
+                    <span class="badge bg-warning text-dark">Revision</span>
+                {% else %}
+                    <span class="badge bg-secondary">Not Started</span>
+                {% endif %}
+            </td>
 
             <td>
                 <a href="{{ url_for('problems.edit_problem', id=problem.id) }}"
@@ -67,6 +123,8 @@
                 <form action="{{ url_for('problems.delete_problem', id=problem.id) }}"
                     method="POST"
                     style="display:inline;">
+
+                    {{ delete_form.hidden_tag() }}
 
                     <button type="submit"
                          class="btn btn-danger btn-sm"
@@ -82,8 +140,9 @@
     {% else %}
 
         <tr>
-            <td colspan="6" class="text-center">
-                No problems added yet.
+            <td colspan="6" class="text-center text-muted">
+                No problems found. Try adjusting your filters or
+                <a href="{{ url_for('problems.add_problem') }}">add a new problem</a>.
             </td>
         </tr>
 

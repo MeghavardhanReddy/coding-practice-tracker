@@ -1,5 +1,6 @@
 from models import db
 
+
 class Problem(db.Model):
     __tablename__ = "problems"
 
@@ -12,15 +13,10 @@ class Problem(db.Model):
     )
 
     title = db.Column(db.String(200), nullable=False)
-
     platform = db.Column(db.String(50), nullable=False)
-
     difficulty = db.Column(db.String(20), nullable=False)
-
     topic = db.Column(db.String(100), nullable=False)
-
     problem_link = db.Column(db.String(300))
-
     notes = db.Column(db.Text)
 
     status = db.Column(
@@ -28,9 +24,13 @@ class Problem(db.Model):
         default="Not Started"
     )
 
-practice_sessions = db.relationship(
-    "Practice",
-    backref="problem",
-    lazy=True,
-    cascade="all, delete-orphan"
-)
+    # Relationship — inside the class body
+    practice_sessions = db.relationship(
+        "Practice",
+        backref="problem",
+        lazy=True,
+        cascade="all, delete-orphan"
+    )
+
+    def __repr__(self):
+        return f"<Problem {self.title}>"

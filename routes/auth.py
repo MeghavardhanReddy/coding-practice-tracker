@@ -1,9 +1,11 @@
 from flask import Blueprint, render_template, redirect, url_for, flash
+from flask_login import login_user, logout_user, login_required, current_user
+
 from forms.auth_forms import RegisterForm
 from forms.login_form import LoginForm
 from models import db
 from models.user import User
-from flask_login import login_user, logout_user, login_required, current_user
+
 auth = Blueprint("auth", __name__)
 
 
@@ -15,18 +17,15 @@ def login():
 
         user = User.query.filter_by(email=form.email.data).first()
 
-        
         if user and user.check_password(form.password.data):
-
             login_user(user)
-
             flash("Login Successful!", "success")
-
             return redirect(url_for("dashboard"))
 
         flash("Invalid Email or Password", "danger")
 
     return render_template("login.html", form=form)
+
 
 @auth.route("/register", methods=["GET", "POST"])
 def register():
@@ -50,11 +49,13 @@ def register():
         db.session.add(user)
         db.session.commit()
 
-        flash("Registration Successful!", "success")
+        flash("Registration Successful! Please log in.", "success")
 
-        return redirect(url_for("auth.register"))
+        # Fixed: redirect to login after successful registration
+        return redirect(url_for("auth.login"))
 
     return render_template("register.html", form=form)
+
 
 @auth.route("/logout")
 @login_required

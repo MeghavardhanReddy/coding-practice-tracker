@@ -1,5 +1,6 @@
 from models import db
-from datetime import datetime
+from datetime import datetime, timezone
+
 
 class Practice(db.Model):
     __tablename__ = "practice"
@@ -25,8 +26,8 @@ class Practice(db.Model):
 
     practice_date = db.Column(
         db.DateTime,
-        default=datetime.utcnow
+        default=lambda: datetime.now(timezone.utc)
     )
 
-    # ✅ Add this relationship
-    problem = db.relationship("Problem", backref="practice_sessions")
+    def __repr__(self):
+        return f"<Practice problem_id={self.problem_id} status={self.status}>"

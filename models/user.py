@@ -15,28 +15,29 @@ class User(UserMixin, db.Model):
         server_default=db.func.current_timestamp()
     )
 
+    # Relationships — must be inside the class body
+    problems = db.relationship(
+        "Problem",
+        backref="user",
+        lazy=True,
+        cascade="all, delete-orphan"
+    )
+
+    practice_sessions = db.relationship(
+        "Practice",
+        backref="user",
+        lazy=True,
+        cascade="all, delete-orphan"
+    )
+
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    def __repr__(self):
-        return f"<User {self.full_name}>"
-
     def get_id(self):
         return str(self.user_id)
 
-problems = db.relationship(
-    "Problem",
-    backref="user",
-    lazy=True,
-    cascade="all, delete-orphan"
-)
-
-practice_sessions = db.relationship(
-    "Practice",
-    backref="user",
-    lazy=True,
-    cascade="all, delete-orphan"
-)
+    def __repr__(self):
+        return f"<User {self.full_name}>"

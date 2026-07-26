@@ -78,7 +78,7 @@ def dashboard():
     ).scalar()
 
     if average_time is None:
-        average_time = 0
+        average_time = 0.0
 
     success_rate = 0
 
@@ -109,20 +109,28 @@ def dashboard():
     status_labels = [row[0] for row in status_data]
     status_counts = [row[1] for row in status_data]
 
+    # Recent Activity: last 5 practice sessions
+    recent_sessions = Practice.query.filter_by(
+        user_id=current_user.user_id
+    ).order_by(
+        Practice.practice_date.desc()
+    ).limit(5).all()
+
     return render_template(
-    "dashboard.html",
-    total_problems=total_problems,
-    solved=solved,
-    attempted=attempted,
-    revision=revision,
-    total_sessions=total_sessions,
-    average_time=round(average_time, 2),
-    success_rate=success_rate,
-    difficulty_labels=difficulty_labels,
-    difficulty_counts=difficulty_counts,
-    status_labels=status_labels,
-    status_counts=status_counts
-)
+        "dashboard.html",
+        total_problems=total_problems,
+        solved=solved,
+        attempted=attempted,
+        revision=revision,
+        total_sessions=total_sessions,
+        average_time=round(average_time, 2),
+        success_rate=success_rate,
+        difficulty_labels=difficulty_labels,
+        difficulty_counts=difficulty_counts,
+        status_labels=status_labels,
+        status_counts=status_counts,
+        recent_sessions=recent_sessions
+    )
 
 # Run Application
 if __name__ == "__main__":
