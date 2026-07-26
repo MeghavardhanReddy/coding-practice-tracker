@@ -3,8 +3,7 @@ from forms.auth_forms import RegisterForm
 from forms.login_form import LoginForm
 from models import db
 from models.user import User
-from flask_login import login_user
-
+from flask_login import login_user, logout_user, login_required, current_user
 auth = Blueprint("auth", __name__)
 
 
@@ -16,13 +15,7 @@ def login():
 
         user = User.query.filter_by(email=form.email.data).first()
 
-        print("Entered Email:", form.email.data)
-        print("User Found:", user)
-
-        if user:
-            print("Stored Hash:", user.password_hash)
-            print("Password Check:", user.check_password(form.password.data))
-
+        
         if user and user.check_password(form.password.data):
 
             login_user(user)
@@ -62,3 +55,10 @@ def register():
         return redirect(url_for("auth.register"))
 
     return render_template("register.html", form=form)
+
+@auth.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    flash("Logged out successfully!", "success")
+    return redirect(url_for("auth.login"))

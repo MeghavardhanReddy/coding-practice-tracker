@@ -27,3 +27,10 @@ class Problem(db.Model):
         db.String(20),
         default="Not Started"
     )
+
+practice_sessions = db.relationship(
+    "Practice",
+    backref="problem",
+    lazy=True,
+    cascade="all, delete-orphan"
+)

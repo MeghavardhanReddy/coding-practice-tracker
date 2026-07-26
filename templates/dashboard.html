@@ -1,13 +1,3 @@
-<a href="{{ url_for('problems.add_problem') }}"
-   class="btn btn-primary mb-3">
-    + Add Problem
-</a>
-
-<a href="{{ url_for('problems.view_problems') }}"
-   class="btn btn-secondary">
-    View Problems
-</a>
-
 {% extends "base.html" %}
 
 {% block title %}
@@ -22,15 +12,27 @@ Dashboard
     <a href="{{ url_for('problems.add_problem') }}" class="btn btn-primary">
         + Add Problem
     </a>
+
+    <a href="{{ url_for('problems.view_problems') }}" class="btn btn-secondary">
+        View Problems
+    </a>
+
+    <a href="{{ url_for('practice.add_practice') }}" class="btn btn-success">
+        Practice Session
+    </a>
+
+    <a href="{{ url_for('practice.practice_history') }}" class="btn btn-info">
+        Practice History
+    </a>
 </div>
 
-<div class="row">
+<div class="row mt-4">
 
     <div class="col-md-3 mb-3">
         <div class="card shadow text-center">
             <div class="card-body">
                 <h5>Total Problems</h5>
-                <h2>0</h2>
+                <h2>{{ total_problems }}</h2>
             </div>
         </div>
     </div>
@@ -39,7 +41,7 @@ Dashboard
         <div class="card shadow text-center">
             <div class="card-body">
                 <h5>Solved</h5>
-                <h2>0</h2>
+                <h2>{{ solved }}</h2>
             </div>
         </div>
     </div>
@@ -48,7 +50,7 @@ Dashboard
         <div class="card shadow text-center">
             <div class="card-body">
                 <h5>Attempted</h5>
-                <h2>0</h2>
+                <h2>{{ attempted }}</h2>
             </div>
         </div>
     </div>
@@ -56,21 +58,144 @@ Dashboard
     <div class="col-md-3 mb-3">
         <div class="card shadow text-center">
             <div class="card-body">
-                <h5>Current Streak</h5>
-                <h2>0 🔥</h2>
+                <h5>Revision</h5>
+                <h2>{{ revision }}</h2>
             </div>
         </div>
     </div>
 
 </div>
 
+<div class="row">
+
+    <div class="col-md-4 mb-3">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <h5>Total Practice Sessions</h5>
+                <h2>{{ total_sessions }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <h5>Average Time</h5>
+                <h2>{{ average_time }} min</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <h5>Success Rate</h5>
+                <h2>{{ success_rate }}%</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<hr class="my-4">
+
+<div class="row">
+
+    <div class="col-md-6 mb-4">
+        <div class="card shadow">
+            <div class="card-header">
+                <h5>Problems by Difficulty</h5>
+            </div>
+
+            <div class="card-body">
+                <canvas id="difficultyChart"></canvas>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card shadow">
+            <div class="card-header">
+                <h5>Practice Status Distribution</h5>
+            </div>
+
+            <div class="card-body">
+                <canvas id="statusChart"></canvas>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
 <div class="card shadow mt-4">
+
     <div class="card-header">
         <h5>Recent Activity</h5>
     </div>
+
     <div class="card-body">
-        <p class="text-muted">No coding activity yet.</p>
+        <p class="text-muted">
+            No coding activity yet.
+        </p>
     </div>
+
 </div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    console.log("Chart Loaded:", typeof Chart);
+
+    const difficultyCanvas = document.getElementById("difficultyChart");
+
+    new Chart(difficultyCanvas, {
+        type: "bar",
+        data: {
+            labels: {{ difficulty_labels | tojson }},
+            datasets: [{
+                label: "Problems",
+                data: {{ difficulty_counts | tojson }},
+                backgroundColor: [
+                    "#198754",
+                    "#ffc107",
+                    "#dc3545"
+                ]
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+
+    const statusCanvas = document.getElementById("statusChart");
+
+    new Chart(statusCanvas, {
+        type: "pie",
+        data: {
+            labels: {{ status_labels | tojson }},
+            datasets: [{
+                data: {{ status_counts | tojson }},
+                backgroundColor: [
+                    "#198754",
+                    "#0d6efd",
+                    "#ffc107"
+                ]
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+
+});
+
+</script>
 
 {% endblock %}

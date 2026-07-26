@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Practice History{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Practice History</h2>
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-dark">
+            <tr>
+                <th>Date</th>
+                <th>Problem</th>
+                <th>Status</th>
+                <th>Time (min)</th>
+                <th>Attempts</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% for session in sessions %}
+
+        <tr>
+            <td>{{ session.practice_date }}</td>
+            <td>{{ session.problem.title }}</td>
+            <td>{{ session.status }}</td>
+            <td>{{ session.time_taken }}</td>
+            <td>{{ session.attempts }}</td>
+        </tr>
+
+        {% else %}
+
+        <tr>
+            <td colspan="5" class="text-center">
+                No practice sessions found.
+            </td>
+        </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

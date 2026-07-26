@@ -33,3 +33,10 @@ problems = db.relationship(
     lazy=True,
     cascade="all, delete-orphan"
 )
+
+practice_sessions = db.relationship(
+    "Practice",
+    backref="user",
+    lazy=True,
+    cascade="all, delete-orphan"
+)
