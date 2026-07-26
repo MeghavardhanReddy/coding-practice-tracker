@@ -26,3 +26,10 @@ class User(UserMixin, db.Model):
 
     def get_id(self):
         return str(self.user_id)
+
+problems = db.relationship(
+    "Problem",
+    backref="user",
+    lazy=True,
+    cascade="all, delete-orphan"
+)

@@ -1,0 +1,76 @@
+<a href="{{ url_for('problems.add_problem') }}"
+   class="btn btn-primary mb-3">
+    + Add Problem
+</a>
+
+<a href="{{ url_for('problems.view_problems') }}"
+   class="btn btn-secondary">
+    View Problems
+</a>
+
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">Dashboard</h2>
+
+<div class="mb-3">
+    <a href="{{ url_for('problems.add_problem') }}" class="btn btn-primary">
+        + Add Problem
+    </a>
+</div>
+
+<div class="row">
+
+    <div class="col-md-3 mb-3">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <h5>Total Problems</h5>
+                <h2>0</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <h5>Solved</h5>
+                <h2>0</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <h5>Attempted</h5>
+                <h2>0</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <h5>Current Streak</h5>
+                <h2>0 🔥</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="card shadow mt-4">
+    <div class="card-header">
+        <h5>Recent Activity</h5>
+    </div>
+    <div class="card-body">
+        <p class="text-muted">No coding activity yet.</p>
+    </div>
+</div>
+
+{% endblock %}

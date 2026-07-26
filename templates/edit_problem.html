@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Problem{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-warning">
+            <h3>Edit Problem</h3>
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST">
+
+                {{ form.hidden_tag() }}
+
+                <div class="mb-3">
+                    {{ form.title.label(class="form-label") }}
+                    {{ form.title(class="form-control") }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.platform.label(class="form-label") }}
+                    {{ form.platform(class="form-select") }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.difficulty.label(class="form-label") }}
+                    {{ form.difficulty(class="form-select") }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.topic.label(class="form-label") }}
+                    {{ form.topic(class="form-control") }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.problem_link.label(class="form-label") }}
+                    {{ form.problem_link(class="form-control") }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.notes.label(class="form-label") }}
+                    {{ form.notes(class="form-control", rows="4") }}
+                </div>
+
+                <button class="btn btn-primary">
+                    Update Problem
+                </button>
+
+                <a href="{{ url_for('problems.view_problems') }}"
+                   class="btn btn-secondary">
+                    Cancel
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -4,7 +4,10 @@ from config import Config
 from models import db
 from utils.login_manager import login_manager
 from flask_login import login_required, current_user
-from flask import Flask, redirect, url_for
+from flask import Flask, redirect, url_for, render_template
+from models.problem import Problem
+from routes.problems import problems
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -21,6 +24,7 @@ with app.app_context():
     db.create_all()
 
 app.register_blueprint(auth)
+app.register_blueprint(problems)
 
 
 @app.route("/")
@@ -31,13 +35,7 @@ def home():
 @app.route("/dashboard")
 @login_required
 def dashboard():
-    return f"""
-    <h1>Welcome, {current_user.full_name}!</h1>
-
-    <h3>🎉 Login Successful</h3>
-
-    <p>This will become your dashboard.</p>
-    """
+    return render_template("dashboard.html")
 
 
 if __name__ == "__main__":
