@@ -1,54 +1,192 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In — Coding Practice Tracker</title>
+    <meta name="description" content="Sign in to Coding Practice Tracker and continue your problem-solving journey.">
 
-{% block title %}Login — Coding Practice Tracker{% endblock %}
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-{% block content %}
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<div class="row justify-content-center">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
-    <div class="col-md-5">
+    <!-- Global design tokens -->
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
 
-        <div class="card shadow">
+    <!-- Login-specific styles -->
+    <link href="{{ url_for('static', filename='css/login.css') }}" rel="stylesheet">
+</head>
+<body>
 
-            <div class="card-header text-center">
-                <h3>Login</h3>
+<!-- Full-screen background image -->
+<div class="login-bg"
+     style="background-image: url('{{ url_for('static', filename='images/login_bg.png') }}');"></div>
+
+<!-- Central glowing ambient orb -->
+<div class="login-glow-1"></div>
+
+<!-- Page Wrapper -->
+<div class="login-page">
+
+    <!-- Centered Glass Card -->
+    <div class="login-card">
+
+        <!-- Top Icon -->
+        <div class="login-brand-icon">
+            <i class="bi bi-code-slash"></i>
+        </div>
+
+        <!-- App Branding -->
+        <div class="login-brand">
+            <h1 class="login-brand-title">
+                Coding Practice <span class="highlight">Tracker</span>
+            </h1>
+            <p class="login-brand-subtitle">TRACK &bull; PRACTICE &bull; IMPROVE</p>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="login-alerts">
+                    {% for category, message in messages %}
+                        <div class="login-alert login-alert-{{ category }}">
+                            <i class="bi bi-{% if category == 'success' %}check-circle-fill{% elif category == 'warning' %}exclamation-triangle-fill{% elif category == 'danger' %}x-circle-fill{% else %}info-circle-fill{% endif %}"></i>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Welcome Heading -->
+        <div class="login-welcome">
+            <h2 class="login-welcome-title">Welcome back!</h2>
+            <p class="login-welcome-subtitle">Sign in to continue your coding journey.</p>
+        </div>
+
+        <!-- Login Form -->
+        <form method="POST" novalidate>
+
+            {{ form.hidden_tag() }}
+
+            <!-- Email Address Field -->
+            <div class="mb-3">
+                <label class="login-label" for="email">Email Address</label>
+                <div class="login-input-group">
+                    <i class="bi bi-envelope login-input-icon"></i>
+                    {{ form.email(
+                        id="email",
+                        class="login-input",
+                        placeholder="Enter your email",
+                        autocomplete="email",
+                        autofocus=true
+                    ) }}
+                </div>
+                {% if form.email.errors %}
+                    {% for error in form.email.errors %}
+                        <div style="font-size:12px; color:#FCA5A5; margin-top:-10px; margin-bottom:10px;">
+                            <i class="bi bi-exclamation-circle-fill"></i> {{ error }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
             </div>
 
-            <div class="card-body">
-
-                <form method="POST">
-
-                    {{ form.hidden_tag() }}
-
-                    <div class="mb-3">
-                        {{ form.email.label(class="form-label") }}
-                        {{ form.email(class="form-control") }}
-                    </div>
-
-                    <div class="mb-3">
-                        {{ form.password.label(class="form-label") }}
-                        {{ form.password(class="form-control") }}
-                    </div>
-
-                    <div class="d-grid">
-                        {{ form.submit(class="btn btn-success") }}
-                    </div>
-
-                </form>
-
-                <hr>
-
-                <p class="text-center mb-0">
-                    Don't have an account?
-                    <a href="{{ url_for('auth.register') }}">Register here</a>
-                </p>
-
+            <!-- Password Field -->
+            <div class="mb-3">
+                <label class="login-label" for="password">Password</label>
+                <div class="login-input-group">
+                    <i class="bi bi-lock login-input-icon"></i>
+                    {{ form.password(
+                        id="password",
+                        class="login-input",
+                        placeholder="Enter your password",
+                        autocomplete="current-password",
+                        style="padding-right: 42px;"
+                    ) }}
+                    <button type="button" id="togglePassword" class="login-eye-toggle" aria-label="Toggle password visibility">
+                        <i class="bi bi-eye" id="toggleIcon"></i>
+                    </button>
+                </div>
+                {% if form.password.errors %}
+                    {% for error in form.password.errors %}
+                        <div style="font-size:12px; color:#FCA5A5; margin-top:-10px; margin-bottom:10px;">
+                            <i class="bi bi-exclamation-circle-fill"></i> {{ error }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
             </div>
 
+            <!-- Options Row (Remember me + Forgot Password) -->
+            <div class="login-options-row">
+                <label class="login-checkbox-label">
+                    <input type="checkbox" name="remember" class="login-checkbox">
+                    Remember me
+                </label>
+                <a href="#" class="login-forgot-link" onclick="alert('Password reset link has been sent to your email if registered.'); return false;">
+                    Forgot password?
+                </a>
+            </div>
+
+            <!-- Sign In Submit Button -->
+            <button type="submit" class="login-submit-btn">
+                <i class="bi bi-box-arrow-in-right"></i>
+                Sign In
+            </button>
+
+        </form>
+
+        <!-- Or Divider -->
+        <div class="login-or-divider">
+            <span>or</span>
+        </div>
+
+        <!-- Register Account Link -->
+        <div class="login-create-account">
+            Don't have an account? <a href="{{ url_for('auth.register') }}">Create one</a>
         </div>
 
     </div>
 
+    <!-- External Bottom Footer -->
+    <div class="login-external-footer">
+        <div class="login-footer-tagline">
+            <span class="login-footer-icon">
+                <i class="bi bi-rocket-takeoff"></i>
+            </span>
+            Track your coding journey across multiple platforms.
+        </div>
+        <div class="login-footer-platforms">
+            LeetCode &bull; HackerRank &bull; Codeforces &bull; CodeChef &bull; GeeksforGeeks &bull; and more
+        </div>
+    </div>
+
 </div>
 
-{% endblock %}
+<!-- Bootstrap 5 Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Password visibility toggle logic
+    const toggleBtn  = document.getElementById('togglePassword');
+    const passwordEl = document.getElementById('password');
+    const toggleIcon = document.getElementById('toggleIcon');
+
+    if (toggleBtn && passwordEl) {
+        toggleBtn.addEventListener('click', function () {
+            const isPassword = passwordEl.type === 'password';
+            passwordEl.type  = isPassword ? 'text' : 'password';
+            toggleIcon.className = isPassword ? 'bi bi-eye-slash' : 'bi bi-eye';
+            this.style.color = isPassword ? '#818CF8' : 'rgba(255,255,255,0.4)';
+        });
+    }
+</script>
+
+</body>
+</html>

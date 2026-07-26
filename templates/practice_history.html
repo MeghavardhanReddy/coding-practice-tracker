@@ -1,79 +1,112 @@
 {% extends "base.html" %}
 
-{% block title %}Practice History{% endblock %}
+{% block title %}Practice History — CodeTracker{% endblock %}
+{% block page_title %}Practice History{% endblock %}
+
+{% block topbar_actions %}
+    <a href="{{ url_for('practice.add_practice') }}" class="btn btn-success">
+        <i class="bi bi-plus-lg"></i> New Session
+    </a>
+{% endblock %}
 
 {% block content %}
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="mb-0">Practice History</h2>
-    <a href="{{ url_for('practice.add_practice') }}" class="btn btn-success">
-        + New Session
-    </a>
-</div>
+<div class="table-container">
 
-<table class="table table-bordered table-hover">
+    <div class="table-container-header">
+        <h2 class="table-container-title">All Sessions</h2>
+        <span style="font-size:12px;color:var(--text-muted);">
+            {{ sessions | length }} session{% if sessions | length != 1 %}s{% endif %} total
+        </span>
+    </div>
 
-    <thead class="table-dark">
+    {% if sessions %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Problem</th>
+                <th>Status</th>
+                <th>Time</th>
+                <th>Attempts</th>
+                <th>Notes</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for session in sessions %}
         <tr>
-            <th>Date</th>
-            <th>Problem</th>
-            <th>Status</th>
-            <th>Time (min)</th>
-            <th>Attempts</th>
-            <th>Actions</th>
+
+            <td style="color:var(--text-secondary);white-space:nowrap;">
+                {{ session.practice_date.strftime('%d %b %Y') }}
+                <div style="font-size:11px;color:var(--text-muted);">
+                    {{ session.practice_date.strftime('%H:%M') }}
+                </div>
+            </td>
+
+            <td style="font-weight:600; max-width: 200px;">
+                {{ session.problem.title }}
+            </td>
+
+            <td>
+                {% if session.status == "Solved" %}
+                    <span class="badge badge-solved"><i class="bi bi-check"></i> Solved</span>
+                {% elif session.status == "Attempted" %}
+                    <span class="badge badge-attempted"><i class="bi bi-play"></i> Attempted</span>
+                {% else %}
+                    <span class="badge badge-revision"><i class="bi bi-arrow-repeat"></i> Revision</span>
+                {% endif %}
+            </td>
+
+            <td style="color:var(--text-secondary);">{{ session.time_taken }} min</td>
+
+            <td style="color:var(--text-secondary);">{{ session.attempts }}</td>
+
+            <td style="max-width:180px;">
+                {% if session.notes %}
+                    <span style="font-size:12px;color:var(--text-secondary);
+                                 display:block;white-space:nowrap;overflow:hidden;
+                                 text-overflow:ellipsis;">
+                        {{ session.notes[:50] }}{% if session.notes|length > 50 %}…{% endif %}
+                    </span>
+                {% else %}
+                    <span style="color:var(--text-muted);font-size:12px;">—</span>
+                {% endif %}
+            </td>
+
+            <td>
+                <div class="d-flex gap-2">
+                    <a href="{{ url_for('practice.edit_practice', id=session.id) }}"
+                       class="btn btn-warning btn-sm">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+
+                    <form action="{{ url_for('practice.delete_practice', id=session.id) }}"
+                          method="POST" style="display:inline;">
+                        {{ delete_form.hidden_tag() }}
+                        <button type="submit" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Delete this practice session?');">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+                </div>
+            </td>
+
         </tr>
-    </thead>
-
-    <tbody>
-
-    {% for session in sessions %}
-
-    <tr>
-        <td>{{ session.practice_date.strftime('%Y-%m-%d %H:%M') }}</td>
-        <td>{{ session.problem.title }}</td>
-        <td>
-            {% if session.status == "Solved" %}
-                <span class="badge bg-success">Solved</span>
-            {% elif session.status == "Attempted" %}
-                <span class="badge bg-primary">Attempted</span>
-            {% else %}
-                <span class="badge bg-warning text-dark">Revision</span>
-            {% endif %}
-        </td>
-        <td>{{ session.time_taken }}</td>
-        <td>{{ session.attempts }}</td>
-        <td>
-            <a href="{{ url_for('practice.edit_practice', id=session.id) }}"
-               class="btn btn-warning btn-sm">
-                Edit
-            </a>
-
-            <form action="{{ url_for('practice.delete_practice', id=session.id) }}"
-                  method="POST"
-                  style="display:inline;">
-                {{ delete_form.hidden_tag() }}
-                <button type="submit"
-                        class="btn btn-danger btn-sm"
-                        onclick="return confirm('Delete this practice session?');">
-                    Delete
-                </button>
-            </form>
-        </td>
-    </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
     {% else %}
+    <div class="table-empty">
+        <i class="bi bi-calendar-x"></i>
+        <p>No practice sessions yet.<br>Start solving problems to build your history.</p>
+        <a href="{{ url_for('practice.add_practice') }}" class="btn btn-success">
+            <i class="bi bi-play-circle"></i> Log First Session
+        </a>
+    </div>
+    {% endif %}
 
-    <tr>
-        <td colspan="6" class="text-center text-muted">
-            No practice sessions found.
-            <a href="{{ url_for('practice.add_practice') }}">Log your first session</a>.
-        </td>
-    </tr>
-
-    {% endfor %}
-
-    </tbody>
-
-</table>
+</div>
 
 {% endblock %}

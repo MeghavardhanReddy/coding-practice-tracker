@@ -1,63 +1,77 @@
 {% extends "base.html" %}
 
-{% block title %}Add Problem{% endblock %}
+{% block title %}Add Problem — CodeTracker{% endblock %}
+{% block page_title %}Add Problem{% endblock %}
+
+{% block topbar_actions %}
+    <a href="{{ url_for('problems.view_problems') }}" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Back to Problems
+    </a>
+{% endblock %}
 
 {% block content %}
 
-<div class="container mt-4">
+<div class="row justify-content-center">
+<div class="col-lg-7 col-xl-6">
 
-    <div class="card shadow">
+    <div class="form-card">
 
-        <div class="card-header bg-primary text-white">
-            <h3>Add Coding Problem</h3>
+        <div class="form-card-header">
+            <h2><i class="bi bi-plus-circle me-2" style="color:var(--primary);"></i>Add Coding Problem</h2>
+            <p>Fill in the details below to add a problem to your tracker.</p>
         </div>
 
-        <div class="card-body">
+        <form method="POST">
 
-            <form method="POST">
+            {{ form.hidden_tag() }}
 
-                {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.title.label(class="form-label") }}
+                {{ form.title(class="form-control", placeholder="e.g. Two Sum") }}
+            </div>
 
-                <div class="mb-3">
-                    {{ form.title.label(class="form-label") }}
-                    {{ form.title(class="form-control") }}
+            <div class="row g-3">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        {{ form.platform.label(class="form-label") }}
+                        {{ form.platform(class="form-select") }}
+                    </div>
                 </div>
-
-                <div class="mb-3">
-                    {{ form.platform.label(class="form-label") }}
-                    {{ form.platform(class="form-select") }}
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        {{ form.difficulty.label(class="form-label") }}
+                        {{ form.difficulty(class="form-select") }}
+                    </div>
                 </div>
+            </div>
 
-                <div class="mb-3">
-                    {{ form.difficulty.label(class="form-label") }}
-                    {{ form.difficulty(class="form-select") }}
-                </div>
+            <div class="form-group">
+                {{ form.topic.label(class="form-label") }}
+                {{ form.topic(class="form-control", placeholder="e.g. Arrays, Dynamic Programming") }}
+            </div>
 
-                <div class="mb-3">
-                    {{ form.topic.label(class="form-label") }}
-                    {{ form.topic(class="form-control") }}
-                </div>
+            <div class="form-group">
+                {{ form.problem_link.label(class="form-label") }}
+                {{ form.problem_link(class="form-control", placeholder="https://leetcode.com/problems/...") }}
+            </div>
 
-                <div class="mb-3">
-                    {{ form.problem_link.label(class="form-label") }}
-                    {{ form.problem_link(class="form-control") }}
-                </div>
+            <div class="form-group">
+                {{ form.notes.label(class="form-label") }}
+                {{ form.notes(class="form-control", rows="3", placeholder="Key observations, hints, approach...") }}
+            </div>
 
-                <div class="mb-3">
-                    {{ form.notes.label(class="form-label") }}
-                    {{ form.notes(class="form-control", rows="4") }}
-                </div>
-
-                <button type="submit" class="btn btn-success">
-                    Add Problem
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-lg"></i> Add Problem
                 </button>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
+            </div>
 
-            </form>
-
-        </div>
+        </form>
 
     </div>
 
+</div>
 </div>
 
 {% endblock %}
