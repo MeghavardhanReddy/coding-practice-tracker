@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register — CodeTracker</title>
+    <title>Register — TrackMyCode</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,7 +24,7 @@
             <div class="auth-logo-icon">
                 <i class="bi bi-code-slash"></i>
             </div>
-            <span class="auth-logo-text">CodeTracker</span>
+            <span class="auth-logo-text">TrackMyCode</span>
         </div>
 
         <!-- Flash Messages -->
@@ -42,7 +42,7 @@
         {% endwith %}
 
         <h2 class="auth-heading">Create your account</h2>
-        <p class="auth-subheading">Start tracking your coding practice today.</p>
+        <p class="auth-subheading">Create a focused workspace for problems, sessions, attempts, time, and notes.</p>
 
         <form method="POST">
 
@@ -59,13 +59,13 @@
             </div>
 
             <div class="row g-3">
-                <div class="col-6">
+                <div class="col-sm-6">
                     <div class="form-group">
                         {{ form.password.label(class="form-label") }}
                         {{ form.password(class="form-control", placeholder="••••••••") }}
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-sm-6">
                     <div class="form-group">
                         {{ form.confirm_password.label(class="form-label") }}
                         {{ form.confirm_password(class="form-control", placeholder="••••••••") }}

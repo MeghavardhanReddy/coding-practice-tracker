@@ -41,7 +41,7 @@ app.register_blueprint(practice)
 # Home Route
 @app.route("/")
 def home():
-    return redirect(url_for("auth.login"))
+    return render_template("homepage.html")
 
 # Dashboard
 @app.route("/dashboard")

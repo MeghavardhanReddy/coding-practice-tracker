@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In — Coding Practice Tracker</title>
-    <meta name="description" content="Sign in to Coding Practice Tracker and continue your problem-solving journey.">
+    <title>Sign In — TrackMyCode</title>
+    <meta name="description" content="Sign in to TrackMyCode and continue your problem-solving journey.">
 
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,6 +32,13 @@
 <!-- Central glowing ambient orb -->
 <div class="login-glow-1"></div>
 
+<div class="login-init-overlay" data-login-transition-overlay aria-hidden="true">
+    <div class="login-init-core">
+        <div class="login-init-mark"></div>
+        <span>INITIALIZING TRACKMYCODE...</span>
+    </div>
+</div>
+
 <!-- Page Wrapper -->
 <div class="login-page">
 
@@ -46,9 +53,9 @@
         <!-- App Branding -->
         <div class="login-brand">
             <h1 class="login-brand-title">
-                Coding Practice <span class="highlight">Tracker</span>
+                TrackMy<span class="highlight">Code</span>
             </h1>
-            <p class="login-brand-subtitle">TRACK &bull; PRACTICE &bull; IMPROVE</p>
+            <p class="login-brand-subtitle">Practice with purpose.</p>
         </div>
 
         <!-- Flash Messages -->
@@ -72,7 +79,7 @@
         </div>
 
         <!-- Login Form -->
-        <form method="POST" novalidate>
+        <form method="POST" novalidate data-login-transition-form>
 
             {{ form.hidden_tag() }}
 
@@ -135,7 +142,7 @@
             </div>
 
             <!-- Sign In Submit Button -->
-            <button type="submit" class="login-submit-btn">
+            <button type="submit" class="login-submit-btn" data-login-submit>
                 <i class="bi bi-box-arrow-in-right"></i>
                 Sign In
             </button>
@@ -160,10 +167,10 @@
             <span class="login-footer-icon">
                 <i class="bi bi-rocket-takeoff"></i>
             </span>
-            Track your coding journey across multiple platforms.
+            TrackMyCode helps keep practice sessions visible.
         </div>
         <div class="login-footer-platforms">
-            LeetCode &bull; HackerRank &bull; Codeforces &bull; CodeChef &bull; GeeksforGeeks &bull; and more
+            Problems &bull; sessions &bull; attempts &bull; time &bull; notes
         </div>
     </div>
 
@@ -187,6 +194,7 @@
         });
     }
 </script>
+<script src="{{ url_for('static', filename='js/login-transition.js') }}"></script>
 
 </body>
 </html>

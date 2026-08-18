@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Coding Practice Tracker{% endblock %}</title>
-
+    <title>{% block title %}TrackMyCode{% endblock %}</title>
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
 
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -19,110 +20,127 @@
     <!-- Design System -->
     <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
 </head>
-<body>
 
-<div class="app-layout">
+<body class="app-body">
 
-    <!-- ===================== SIDEBAR ===================== -->
-    <aside class="sidebar">
-
-        <div class="sidebar-brand">
-            <div class="brand-icon">
-                <i class="bi bi-code-slash"></i>
-            </div>
-            <div>
-                <span class="brand-name">CodeTracker</span>
-                <span class="brand-tagline">Practice &amp; Progress</span>
-            </div>
+    <div class="app-transition-overlay" data-app-transition-overlay aria-hidden="true">
+        <div class="app-transition-core">
+            <div class="app-transition-mark"></div>
+            <span data-app-transition-label>SESSION CLOSING...</span>
         </div>
+    </div>
 
-        <nav class="sidebar-nav">
+    <input type="checkbox" id="nav-toggle" class="nav-toggle-input" aria-label="Toggle navigation">
+    <label for="nav-toggle" class="mobile-nav-toggle">
+        <i class="bi bi-list"></i>
+    </label>
 
-            <div class="nav-section-label">Main</div>
+    <div class="app-layout">
 
-            <a href="{{ url_for('dashboard') }}"
-               class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}">
-                <i class="bi bi-speedometer2"></i>
-                <span>Dashboard</span>
-            </a>
+        <!-- ===================== SIDEBAR ===================== -->
+        <aside class="sidebar">
 
-            <a href="{{ url_for('problems.view_problems') }}"
-               class="nav-link {% if request.endpoint in ['problems.view_problems','problems.add_problem','problems.edit_problem'] %}active{% endif %}">
-                <i class="bi bi-code-square"></i>
-                <span>Problems</span>
-            </a>
-
-            <div class="nav-section-label">Practice</div>
-
-            <a href="{{ url_for('practice.add_practice') }}"
-               class="nav-link {% if request.endpoint == 'practice.add_practice' %}active{% endif %}">
-                <i class="bi bi-play-circle"></i>
-                <span>New Session</span>
-            </a>
-
-            <a href="{{ url_for('practice.practice_history') }}"
-               class="nav-link {% if request.endpoint in ['practice.practice_history','practice.edit_practice'] %}active{% endif %}">
-                <i class="bi bi-clock-history"></i>
-                <span>History</span>
-            </a>
-
-        </nav>
-
-        <div class="sidebar-footer">
-            <div class="user-card">
-                <div class="user-avatar">{{ current_user.full_name[0] }}</div>
-                <div style="min-width:0;">
-                    <span class="user-name">{{ current_user.full_name }}</span>
-                    <span class="user-role">{{ current_user.email }}</span>
+            <div class="sidebar-brand">
+                <div class="brand-icon">
+                    <i class="bi bi-code-slash"></i>
+                </div>
+                <div>
+                    <span class="brand-name">TrackMyCode</span>
+                    <span class="brand-tagline">Practice with purpose.</span>
                 </div>
             </div>
-            <a href="{{ url_for('auth.logout') }}" class="logout-btn" title="Logout">
-                <i class="bi bi-box-arrow-right"></i>
-            </a>
-        </div>
 
-    </aside>
+            <nav class="sidebar-nav">
 
-    <!-- ===================== MAIN ===================== -->
-    <div class="main-wrapper">
+                <div class="nav-section-label">Main</div>
 
-        <!-- Topbar -->
-        <header class="topbar">
-            <h1 class="page-title">{% block page_title %}{% endblock %}</h1>
-            <div class="topbar-right">
-                {% block topbar_actions %}{% endblock %}
-            </div>
-        </header>
+                <a href="{{ url_for('dashboard') }}"
+                    class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}">
+                    <i class="bi bi-speedometer2"></i>
+                    <span>Dashboard</span>
+                </a>
 
-        <!-- Content -->
-        <main class="main-content">
+                <a href="{{ url_for('problems.view_problems') }}"
+                    class="nav-link {% if request.endpoint in ['problems.view_problems','problems.add_problem','problems.edit_problem'] %}active{% endif %}">
+                    <i class="bi bi-code-square"></i>
+                    <span>Problems</span>
+                </a>
 
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    <div class="d-flex flex-column gap-2 mb-4">
-                        {% for category, message in messages %}
-                            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                                <i class="bi bi-{% if category == 'success' %}check-circle{% elif category == 'warning' %}exclamation-triangle{% elif category == 'danger' %}x-circle{% else %}info-circle{% endif %}"></i>
-                                {{ message }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        {% endfor %}
+                <div class="nav-section-label">Practice</div>
+
+                <a href="{{ url_for('practice.add_practice') }}"
+                    class="nav-link {% if request.endpoint == 'practice.add_practice' %}active{% endif %}">
+                    <i class="bi bi-play-circle"></i>
+                    <span>New Session</span>
+                </a>
+
+                <a href="{{ url_for('practice.practice_history') }}"
+                    class="nav-link {% if request.endpoint in ['practice.practice_history','practice.edit_practice'] %}active{% endif %}">
+                    <i class="bi bi-clock-history"></i>
+                    <span>History</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-card">
+                    <div class="user-avatar">{{ current_user.full_name[0] }}</div>
+                    <div style="min-width:0;">
+                        <span class="user-name">{{ current_user.full_name }}</span>
+                        <span class="user-role">{{ current_user.email }}</span>
                     </div>
+                </div>
+                <a href="{{ url_for('auth.logout') }}" class="logout-btn js-logout-transition" title="Logout"
+                    data-transition-label="SESSION CLOSING...">
+                    <i class="bi bi-box-arrow-right"></i>
+                </a>
+            </div>
+
+        </aside>
+
+        <!-- ===================== MAIN ===================== -->
+        <div class="main-wrapper">
+
+            <!-- Topbar -->
+            <header class="topbar">
+                <h1 class="page-title">{% block page_title %}{% endblock %}</h1>
+                <div class="topbar-right">
+                    {% block topbar_actions %}{% endblock %}
+                </div>
+            </header>
+
+            <!-- Content -->
+            <main class="main-content page-transition-surface">
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                <div class="d-flex flex-column gap-2 mb-4">
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        <i
+                            class="bi bi-{% if category == 'success' %}check-circle{% elif category == 'warning' %}exclamation-triangle{% elif category == 'danger' %}x-circle{% else %}info-circle{% endif %}"></i>
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endfor %}
+                </div>
                 {% endif %}
-            {% endwith %}
+                {% endwith %}
 
-            {% block content %}{% endblock %}
+                {% block content %}{% endblock %}
 
-        </main>
+            </main>
+
+        </div>
 
     </div>
 
-</div>
-
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-{% block scripts %}{% endblock %}
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/app-transitions.js') }}"></script>
+    {% block scripts %}{% endblock %}
 
 </body>
+
 </html>
