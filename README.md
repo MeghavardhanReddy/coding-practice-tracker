@@ -1,176 +1,59 @@
-# 🚀 Coding Practice Tracker
+# TrackMyCode
 
-A full-stack web application built using **Flask**, **MySQL**, and **SQLAlchemy** to help users track coding practice, monitor progress, and analyze performance across platforms like LeetCode, Codeforces, HackerRank, and more.
+**Practice with purpose.**
 
----
+TrackMyCode is a full-stack coding practice tracker that helps developers organize coding problems, record practice sessions, and understand their progress through a focused dashboard.
 
-## ✨ Features
+## Features
 
-- 🔐 User Authentication (Register/Login/Logout)
-- 📚 Problem Management (Add, Edit, Delete, Search)
-- 📝 Practice Session Tracking
-- 📊 Dashboard Analytics
-- 🔍 Search & Filter Problems
-- 💾 MySQL Database
-- 🔒 Password Hashing
-- 📈 Progress Tracking
+- 🔐 User registration, login, and logout
+- 📚 Coding problem management
+- 🔎 Search and filter problems
+- 🏷️ Platform, difficulty, topic, and status tracking
+- 📝 Practice session tracking
+- ⏱️ Attempts and time tracking
+- 📊 Dashboard statistics and charts
+- 📈 Progress and practice history
+- ✨ Responsive premium landing page
+- 🎬 Purposeful page and authentication transitions
 
----
+## Tech Stack
 
-## 🛠 Tech Stack
-
-| Technology | Used |
-|------------|------|
+| Technology | Purpose |
+|------------|---------|
 | Python | Backend |
-| Flask | Web Framework |
+| Flask | Web framework |
 | MySQL | Database |
-| SQLAlchemy | ORM |
+| SQLAlchemy / Flask-SQLAlchemy | ORM |
 | Flask-Login | Authentication |
-| Bootstrap 5 | UI |
-| HTML/CSS | Frontend |
-| JavaScript | Client-side |
+| Flask-WTF / WTForms | Forms and CSRF protection |
+| Jinja2 | Server-rendered templates |
+| Bootstrap 5 | UI utilities |
+| Bootstrap Icons | Interface icons |
+| HTML5 / CSS3 | Frontend |
+| JavaScript | Client-side interactions |
+| Chart.js | Dashboard charts |
 
----
+## Product Experience
 
-## 📂 Project Structure
+TrackMyCode uses a dark developer-focused visual system built around:
+
+- Obsidian / near-black surfaces
+- Electric cyan / blue accents
+- Digital orange / saffron highlights
+- Restrained energy-based motion
+
+The orange/cyan transition language is used intentionally for product entry and exit:
 
 ```text
-coding-practice-tracker/
-│
-├── app.py
-├── config.py
-├── database/
-├── forms/
-├── models/
-├── routes/
-├── static/
-├── templates/
-└── utils/
-```
-
----
-
-## 📸 Screenshots
-
-### Login
-
-![Login](docs/screenshots/login.png)
-
-### Dashboard
-
-![Dashboard](docs/screenshots/dashboard.png)
-
-### Problem Management
-
-![Problems](docs/screenshots/problems.png)
-
-### Practice Tracker
-
-![Practice](docs/screenshots/practice.png)
-
----
-
-## ⚙ Installation
-
-### Clone Repository
-
-```bash
-git clone https://github.com/MeghavardhanReddy/coding-practice-tracker.git
-cd coding-practice-tracker
-```
-
-### Create Virtual Environment
-
-```bash
-python -m venv venv
-```
-
-### Activate
-
-Windows
-
-```bash
-venv\Scripts\activate
-```
-
-### Install Requirements
-
-```bash
-pip install -r requirements.txt
-```
-
-### Configure Environment
-
-Copy
-
-```
-.env.example
-```
-
-to
-
-```
-.env
-```
-
-Update your MySQL credentials.
-
-### Run
-
-```bash
-python app.py
-```
-
----
-
-## Database
-
-Main Tables
-
-- Users
-- Problems
-- Practice
-
-Relationships
-
-```
-User
- ├── Problems
- └── Practice Sessions
-```
-
----
-
-## Security
-
-- Password Hashing
-- Flask Sessions
-- SQLAlchemy ORM
-- CSRF Protection
-
----
-
-## Future Improvements
-
-- Charts & Reports
-- Daily Streak
-- Goals
-- PDF Export
-- Email Reminders
-- Automatic LeetCode & Codeforces Sync
-
----
-
-## Author
-
-**Meghavardhan Reddy**
-
-GitHub
-
-https://github.com/MeghavardhanReddy
-
----
-
-## License
-
-MIT License
+Landing Page
+     ↓
+Login
+     ↓
+INITIALIZING TRACKMYCODE...
+     ↓
+Dashboard
+     ↓
+SESSION CLOSING...
+     ↓
+Landing Page
